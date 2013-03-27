@@ -27,22 +27,29 @@
                 $loop_cal_week = getCalendarWeek($norm_fecha);
                 if ($loop_cal_week == $current_cal_week) {
                     // 23/03/2013 16:30 Medio Maratón Azkoitia-Azpeitia 21097m Azpeitia (Gipuzkoa) Vredaman, Sukarr
+                    # entry is in bbcode, display in html
                     $entry = $row["Fecha"] . " " . $row["Hora inicio"];
+                    $display = $row["Fecha"] . " " . $row["Hora inicio"];
                     if(!empty($row["Observaciones"])) {
-                        // TODO: check that is a valid url!
-                        $entry .= " <a href=\"" . $row["Observaciones"] . "\">" . $row["Prueba"] . "</a> ";
+                        // Check that is a valid url! http://de3.php.net/manual/en/filter.filters.validate.php
+                        if (filter_var($row["Observaciones"], FILTER_VALIDATE_URL) === FALSE) {
+                            echo $row["Observaciones"] . " seems not a valid url!";
+                        } else {
+                            $entry .= " [URL=\"" . $row["Observaciones"] . "\"]" . $row["Prueba"] . "[/URL] ";
+                            $display .= " <a href=\"" . $row["Observaciones"] . "\">" . $row["Prueba"] . "</a> ";
+                        }
                     } else {
                         $entry .= " " . $row["Prueba"] . " ";
+                        $display .= " " . $row["Prueba"] . " ";
                     }
-                    $entry .= $row["Distancia"] . " " . $row["Localidad"] . " " . $row["Foreros"];
-                    echo $entry . "<br/>\n";
-                    $post_msg .= $entry . "\n\r";
+                    $entry .= $row["Distancia"] . " " . $row["Localidad"] . " [B]" . $row["Foreros"] . "[/B]";
+                    $display .= $row["Distancia"] . " " . $row["Localidad"] . " <strong>" . $row["Foreros"] . "</strong><br/>";
+                    echo $display;
+                    $post_msg .= $entry . "\n";
                 }
             }
         }
         if(!empty($post_msg)) {
-            // TODO: from html to phpBB code
-            $post_msg = "need translation!";
 ?>
             <form action="formPanel.php" method="post" enctype="multipart/form-data">
                 <input type="hidden" name="action" value="week_panel">
@@ -50,14 +57,14 @@
                 <input type="hidden" name="forum_username" value="<?php echo FORUM_USERNAME; ?>">
                 <input type="hidden" name="forum_password" value="<?php echo FORUM_PASSWORD; ?>">
                 <input type="hidden" name="forum_thread" value="<?php echo FORUM_THREAD; ?>">
-                <input type="hidden" name="post_msg" value="<?php echo $post_msg; ?>">
+                <input type="hidden" name="post_msg" value="<?php echo urlencode($post_msg); ?>">
                 <input type="hidden" name="post_title" value="<?php echo $post_title; ?>">
-                Para evitar abusos: ¿cuánto suman dos más dos?<input id="answer" name="answer" type="text" placeholder="bufff..."/>
+                Para evitar abusos: ¿cuánto suman dos más dos? <input id="answer" name="answer" type="text" placeholder="bufff..."/>
                 <input type="submit" id="submit_button" value="Postear panel"/>
 	        </form>
 <?php
         } else {
-            echo "No message built for CW #, nothing to post" . $current_cal_week;
+            echo "No message built for CW #" . $current_cal_week . ", nothing to post";
         }
     } else {
         echo "ERROR!<br/>\n";
