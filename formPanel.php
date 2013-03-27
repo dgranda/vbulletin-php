@@ -13,18 +13,17 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
                 $forum_username = $form_data["forum_username"];
                 $forum_password = $form_data["forum_password"];
                 $forum_thread = $form_data["forum_thread"];
-                $post_msg = $form_data["post_msg"];
+                $post_msg = urldecode($form_data["post_msg"]);
                 $post_title = $form_data["post_title"];
                 $security_answer = $form_data["answer"];
-                //echo json_encode($form_data);
 
                 //TODO: implement a way to prevent more than 1 post per day -> touch <date>?
                 if($security_answer == "cuatro") {
-                    //$vbff = new vBForumFunctions($forum_base_url);
-                    //if(!$vbff->login($forum_username, $forum_password)) {
-	                //    die("Unable to login!");
-                    //}
-                    //$vbff->posts->postReply($forum_thread, $post_msg, $post_title);
+                    $vbff = new vBForumFunctions($forum_base_url);
+                    if(!$vbff->login($forum_username, $forum_password)) {
+	                    die("Unable to login!");
+                    }
+                    $vbff->posts->postReply($forum_thread, $post_msg, $post_title);
                 } else {
                 }
                 break;
