@@ -61,10 +61,4 @@ function getCalendarWeek($date_string) {
     return $my_dateTime->format("W");
 }
 
-function checkCalendarWeek($reference_date_string, $cal_week) {
-    $reference_dateTime = new DateTime($reference_date_string, new DateTimeZone('Europe/Madrid'));
-    $reference_cal_week = $reference_dateTime->format("W");
-    
-}
-
 ?>
