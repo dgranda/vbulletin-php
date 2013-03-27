@@ -20,13 +20,25 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
 
                 //TODO: implement a way to prevent more than 1 post per day -> touch <date>?
                 if($security_answer == "cuatro") {
-                    $vbff = new vBForumFunctions($forum_base_url);
-                    if(!$vbff->login($forum_username, $forum_password)) {
-                        $result_msg = "Error: unable to log in!";
-                        break;
-                    }
-                    if (!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
-                        $result_msg = "Error: something went wrong when trying to post!";
+                    $today = new DateTime("now", new DateTimeZone('Europe/Madrid'));
+                    $date_string = $today->format("Ymd");
+                    if(!file_exists($date_string)) {
+                        $vbff = new vBForumFunctions($forum_base_url);
+                        if($vbff->login($forum_username, $forum_password)) {
+                            //if (!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
+                            if(false){
+                                $result_msg = "Error: something went wrong when trying to post!";
+                            } else {
+                                // Check directory permissions!!
+                                if(!touch($date_string)) {
+                                    error_log("Couldn't create file " . $date_string . " under " . realpath(dirname(__FILE__)), 0);
+                                }
+                            }
+                        } else {
+                            $result_msg = "Error: unable to log in!";
+                        }
+                    } else {
+                        $result_msg = "Error: only one post per day";
                     }
                 } else {
                     $result_msg = "Error: no valid answer for security question: ". $security_answer;
