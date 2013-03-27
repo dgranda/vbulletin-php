@@ -47,13 +47,12 @@ class vBForumFunctions {
 	/**
 	 * Request a page, simple CURL
 	 */
-	public function request($page, $data=array(), $overridelogin=false, $info=false) {
+	public function request($page, $data=array(), $overridelogin=false, $info=false, $multipart_form=false) {
 		$ch = curl_init($this->url.$page);
 		curl_setopt($ch, CURLOPT_HEADER, $info);
         curl_setopt($ch, CURLOPT_HTTPHEADER, array("Expect:  "));
 		//I will not deny the forums the right to block this, it can be done easily through settings.
 		//You are however free to change this.
-		//curl_setopt($ch, CURLOPT_USERAGENT, 'vBulletin PHP Web API 1.0');
         curl_setopt($ch, CURLOPT_USERAGENT, "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0");
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
@@ -68,7 +67,12 @@ class vBForumFunctions {
             $response = "error";
         } else {
 			curl_setopt($ch, CURLOPT_POST, true);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
+            $fields_data = $data;
+            # Passing an array to CURLOPT_POSTFIELDS will encode the data as multipart/form-data, while passing a URL-encoded string will encode the data as application/x-www-form-urlencoded.
+            if (!$multipart_form) {
+                $fields_data = http_build_query($data);
+            }
+			curl_setopt($ch, CURLOPT_POSTFIELDS, $fields_data);
 
             //Execute and get the response
 		    $response = curl_exec($ch);
@@ -146,7 +150,6 @@ class vBForumFunctions {
 		} else {
 			echo "WARNING: No session found!\n";
 		}
-
 		return $this->loggedin;
 	}
 	
