@@ -6,6 +6,7 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
 
     $form_data = $_REQUEST;
     $redirection = "weekly_races.php";
+    $result_msg = "Message has been successfully posted";
     try {
         switch($form_data["action"]) {
             case "week_panel":
@@ -21,11 +22,16 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
                 if($security_answer == "cuatro") {
                     $vbff = new vBForumFunctions($forum_base_url);
                     if(!$vbff->login($forum_username, $forum_password)) {
-	                    die("Unable to login!");
+                        $result_msg = "Error: unable to log in!";
+                        break;
                     }
-                    $vbff->posts->postReply($forum_thread, $post_msg, $post_title);
+                    if (!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
+                        $result_msg = "Error: something went wrong when trying to post!";
+                    }
                 } else {
+                    $result_msg = "Error: no valid answer for security question: ". $security_answer;
                 }
+                $redirection .= "?result=" . urlencode($result_msg);
                 break;
         }
     } catch (Exception $e) {
