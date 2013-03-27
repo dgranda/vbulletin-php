@@ -52,7 +52,7 @@ class Module_posts extends vBulletinModule {
 	 * @param reply  The reply
 	 * @param title  default false, can be set if you want a title
 	 */
-	public function postReply($thread, $reply, $title=false) {
+	public function postReply($thread, $reply, $title=false, $signature=true) {
 		$postfields = $this->getParams();
 		$postfields['do'] = "postreply";
 		$postfields['t'] = $thread;
@@ -60,6 +60,10 @@ class Module_posts extends vBulletinModule {
 			$postfields['title'] = $title;
 		}
 		$postfields['message'] = $reply;
+        $postfields['signature']= 0;
+        if ($signature) {
+            $postfields['signature']= 1;
+        }
 		$resp = $this->request("newreply.php", $postfields, true);
 		if(preg_match("#Location:\s*(.*)#", $resp['header'], $matches)) {
 			return trim($matches[1]);
