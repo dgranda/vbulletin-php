@@ -26,8 +26,8 @@ TODO:
 Update by dgranda, focus on reply to post (weekly_races.php using formPanel.php controller)
 
 1.- Retrieve credentials stored in forum_data.php
-2.- Read data from Spreadsheet hosted in Google Docs (published as csv feed)
-3.- Parse feed to obtain which races are planned for current week
+2.- Read data from spreadsheet hosted in Google Docs (published as csv feed)
+3.- Parse feed to obtain races which are planned for current week
 4.- Build proper bb code to post to target thread in forum
 5.- Pass checks:
 	· Security question (hardcoded)
