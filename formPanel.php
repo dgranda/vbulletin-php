@@ -18,8 +18,8 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
                 $post_title = $form_data["post_title"];
                 $security_answer = $form_data["answer"];
 
-                //TODO: implement a way to prevent more than 1 post per day -> touch <date>?
                 if($security_answer == "cuatro") {
+		    // Only one post per day -> lock file!
                     $today = new DateTime("now", new DateTimeZone('Europe/Madrid'));
                     $date_string = $today->format("Ymd");
                     if(!file_exists($date_string)) {
