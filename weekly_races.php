@@ -27,7 +27,7 @@
             $post_msg = "";
             echo "Entries for current calendar week (" . $today->format("Y-m-d") . ", CW " . $current_cal_week ."):<br/>\n";
             foreach ($spreadsheet_data as $row) {
-                if(!empty($row["Fecha"])) { // We need a valid date!
+                if(!empty($row["Fecha"]) && !empty($row["Foreros"])) { // We need valid date and people running!
                     $norm_fecha = str_replace("/", "-", $row["Fecha"]);
                     $loop_cal_week = getCalendarWeek($norm_fecha);
                     if ($loop_cal_week == $current_cal_week) {
