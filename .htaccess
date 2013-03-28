@@ -1,3 +1,15 @@
+# basic authentication
+AuthType basic
+AuthName "Publicación de paneles"
+AuthUserFile /var/www/html/panel/.htpasswd
+Require valid-user
+
+# secure htpasswd file
+<Files .htpasswd>
+ order allow,deny
+ deny from all
+</Files>
+
 # secure htaccess file
 <Files .htaccess>
  order allow,deny
