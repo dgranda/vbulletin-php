@@ -12,11 +12,33 @@ This class provides easy login/post/reputation/signature functions for vBulletin
 You may use it however you wish, but I take no responsibility for your actions, or actions of others.
 
 Modules included:
-	- vbshout_module.php - For forums using InfernoShout
-	- usercp_module.php - For all forums, used to update signatures/set usergroups
-	- thanks_module.php - For forums with the 'thanks' mod installed
+- vbshout_module.php - For forums using InfernoShout
+- usercp_module.php - For all forums, used to update signatures/set usergroups
+- thanks_module.php - For forums with the 'thanks' mod installed
 
 To disable any modules, simply create a folder called "disabled" and move them into there.
 
 TODO:
 - Confirmation of posting threads/sending visitor messages/thanking etc
+
+--------------------------
+
+Update by dgranda, focus on reply to post (weekly_races.php using formPanel.php controller)
+
+1.- Retrieve credentials stored in forum_data.php
+2.- Read data from Spreadsheet hosted in Google Docs (published as csv feed)
+3.- Parse feed to obtain which races are planned for current week
+4.- Build proper bb code to post to target thread in forum
+5.- Pass checks: security question and one post per day limit
+6.- Post message in forum
+
+Technical details:
+
+- Added some logic to prevent not authorized use:
+· Basic authentication
+· Security question before posting
+· Only allows one post per day -> lock file
+- Second post after login to retrieve security token
+- Default curl method is post x-www-form-urlencoded, multipart otherwise
+- Simple feedback to user
+
