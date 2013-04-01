@@ -64,7 +64,8 @@
                     <input type="hidden" name="forum_thread" value="<?php echo FORUM_THREAD; ?>">
                     <input type="hidden" name="post_msg" value="<?php echo urlencode($post_msg); ?>">
                     <input type="hidden" name="post_title" value="<?php echo $post_title; ?>">
-                    Para evitar abusos: ¿cuánto suman dos más dos? <input id="answer" name="answer" type="text" placeholder="bufff..."/>
+                    Para evitar abusos: ¿cuánto suman dos más dos? <input id="answer" name="answer" type="text" placeholder="bufff..."/><br/>
+                    ¿Modo debug?<input type="checkbox" name="debug" checked="checked"><br/>
                     <input type="submit" id="submit_button" value="Postear panel"/>
 	            </form>
 <?php

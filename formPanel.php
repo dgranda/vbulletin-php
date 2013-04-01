@@ -7,6 +7,7 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
     $form_data = $_REQUEST;
     $redirection = "weekly_races.php";
     $result_msg = "Message has been successfully posted";
+    $debug = false;
     try {
         switch($form_data["action"]) {
             case "week_panel":
@@ -17,21 +18,29 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
                 $post_msg = urldecode($form_data["post_msg"]);
                 $post_title = $form_data["post_title"];
                 $security_answer = $form_data["answer"];
+                if (isset($form_data['debug'])) {
+                    $debug = true;
+                }
 
                 if($security_answer == "cuatro") {
-		    // Only one post per day -> lock file!
+		        // Only one post per day -> lock file!
                     $today = new DateTime("now", new DateTimeZone('Europe/Madrid'));
                     $date_string = $today->format("Ymd");
                     if(!file_exists($date_string)) {
                         $vbff = new vBForumFunctions($forum_base_url);
+                        echo "Trying to log in... ";
                         if($vbff->login($forum_username, $forum_password)) {
+                            echo "OK<br/>\n";
+                            echo "Trying to post... ";
                             //if (!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
-                            if(false){
+                            if(!false){
                                 $result_msg = "Error: something went wrong when trying to post!";
                             } else {
                                 // Check directory permissions!!
                                 if(!touch($date_string)) {
-                                    error_log("Couldn't create file " . $date_string . " under " . realpath(dirname(__FILE__)), 0);
+                                    echo "Couldn't create file " . $date_string . " under " . realpath(dirname(__FILE__));
+                                } else {
+                                    echo "OK<br/>\n";
                                 }
                             }
                         } else {
@@ -49,6 +58,12 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
     } catch (Exception $e) {
         echo $e->getMessage();
     }
-    header("Location: " . $redirection);
+    if ($debug) {
+        echo $result_msg;
+        echo "<br/>\n";
+        echo "Go <a href=\"" . $_SERVER["HTTP_REFERER"] . "\">back</a>"; // TODO: escape to prevent attacks!
+    } else {
+        header("Location: " . $redirection);
+    }
 exit();
 ?>
