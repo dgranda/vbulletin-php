@@ -56,6 +56,9 @@
             }
             if(!empty($post_msg)) {
 ?>
+                <blockquote style="border:1px solid #D4D4D4;background-color:#E5EECC;padding:15px 5px;">
+                    <?php echo $post_msg; ?>
+                </blockquote>
                 <form action="formPanel.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="week_panel">
                     <input type="hidden" name="forum_base_url" value="<?php echo FORUM_BASE_URL; ?>">
