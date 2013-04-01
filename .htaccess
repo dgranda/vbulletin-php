@@ -1,6 +1,6 @@
 # basic authentication
 AuthType basic
-AuthName "Publicación de paneles"
+AuthName "Publicar paneles"
 AuthUserFile /var/www/html/panel/.htpasswd
 Require valid-user
 
@@ -24,3 +24,6 @@ Require valid-user
 
 # disable directory browsing
 Options -Indexes
+
+# default file
+DirectoryIndex weekly_races.php
