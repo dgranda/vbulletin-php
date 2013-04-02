@@ -32,24 +32,18 @@
                     $loop_cal_week = getCalendarWeek($norm_fecha);
                     if ($loop_cal_week == $current_cal_week) {
                         // 23/03/2013 16:30 Medio Maratón Azkoitia-Azpeitia 21097m Azpeitia (Gipuzkoa) Vredaman, Sukarr
-                        # entry is in bbcode, display in html
                         $entry = $row["Fecha"] . " " . $row["Hora inicio"];
-                        $display = $row["Fecha"] . " " . $row["Hora inicio"];
                         if(!empty($row["Observaciones"])) {
                             // Check that is a valid url! http://de3.php.net/manual/en/filter.filters.validate.php
                             if (filter_var($row["Observaciones"], FILTER_VALIDATE_URL) === FALSE) {
                                 echo $row["Observaciones"] . " seems not a valid url!";
                             } else {
-                                $entry .= " [URL=\"" . $row["Observaciones"] . "\"]" . $row["Prueba"] . "[/URL] ";
-                                $display .= " <a href=\"" . $row["Observaciones"] . "\">" . $row["Prueba"] . "</a> ";
+                                $entry .= " [url=" . $row["Observaciones"] . "]" . $row["Prueba"] . "[/url] ";
                             }
                         } else {
                             $entry .= " " . $row["Prueba"] . " ";
-                            $display .= " " . $row["Prueba"] . " ";
                         }
-                        $entry .= $row["Distancia"] . " " . $row["Localidad"] . " [B]" . $row["Foreros"] . "[/B]";
-                        $display .= $row["Distancia"] . " " . $row["Localidad"] . " <strong>" . $row["Foreros"] . "</strong><br/>";
-                        echo $display;
+                        $entry .= $row["Distancia"] . " " . $row["Localidad"] . " [b]" . $row["Foreros"] . "[/b]";
                         $post_msg .= $entry . "\n";
                     }
                 }
@@ -58,6 +52,9 @@
 ?>
                 <blockquote style="border:1px solid #D4D4D4;background-color:#E5EECC;padding:15px 5px;">
                     <?php echo $post_msg; ?>
+                </blockquote>
+                <blockquote style="border:1px solid #d6cfb7;background-color:#eee6cc;padding:15px 5px;">
+                    <?php echo bbc2html($post_msg); ?>
                 </blockquote>
                 <form action="formPanel.php" method="post" enctype="multipart/form-data">
                     <input type="hidden" name="action" value="week_panel">
