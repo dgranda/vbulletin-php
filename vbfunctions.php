@@ -138,11 +138,7 @@ class vBForumFunctions {
 			$this->session = trim($t[1]);
             echo "Session: " . $this->session . "<br/>\n";
             // We need to make another request to find out security token
-            // http://www.elatleta.com/foro/forum.php?s=<session>
-            $params = array("s" => $this->session);
-            $resp2 = $this->request("forum.php", $params, true);
-            if(preg_match("/var SECURITYTOKEN = \"(.*?)\"/", $resp2, $t2)) {
-			    $this->securitytoken = trim($t2[1]);
+            if ($this->getSecurityToken()){
                 echo "Security token: " . $this->securitytoken . "<br/>\n";
 		    } else {
 			    echo "WARNING: No security token\n";
@@ -152,6 +148,18 @@ class vBForumFunctions {
 		}
 		return $this->loggedin;
 	}
+
+    // http://www.elatleta.com/foro/forum.php?s=<session>
+    function getSecurityToken($target_page="forum.php") {
+        $result = false;
+        $params = array("s" => $this->session);
+        $resp = $this->request($target_page, $params, true);
+        if(preg_match("/var SECURITYTOKEN = \"(.*?)\"/", $resp, $t)) {
+		    $this->securitytoken = trim($t[1]);
+            $result = true;
+		}
+        return $result;
+    }
 	
 	/**
 	 * Get the basic params, securitytoken is used in most functions
