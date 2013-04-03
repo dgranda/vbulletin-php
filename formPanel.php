@@ -34,27 +34,28 @@ curl -v -A "Mozilla/5.0 (X11; Linux x86_64; rv:19.0) Gecko/20100101 Firefox/19.0
                             if ($vbff->getSecurityToken()){
                                 echo "OK: " . $vbff->securitytoken . "<br/>\n";
 		                    } else {
-			                    echo "ERROR: No security token\n";
-                                break;
+                                $result_msg = "ERROR: No security token";
+                                throw new Exception($result_msg);
 		                    }
                         } else {
                             echo "Trying to log in... ";
                             if($vbff->login($forum_username, $forum_password)) {
                                 echo "OK<br/>\n";
-                                echo "Trying to post... ";
-                                if (!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
-                                //if(!false){
-                                    $result_msg = "Error: something went wrong when trying to post!";
-                                } else {
-                                    // Check directory permissions!!
-                                    if(!touch($date_string)) {
-                                        echo "Couldn't create file " . $date_string . " under " . realpath(dirname(__FILE__));
-                                    } else {
-                                        echo "OK<br/>\n";
-                                    }
-                                }
                             } else {
                                 $result_msg = "Error: unable to log in!";
+                                throw new Exception($result_msg);
+                            }
+                        }
+                        echo "Trying to post... ";
+                        if(!$vbff->posts->postReply($forum_thread, $post_msg, $post_title)) {
+                        //if(!false){
+                            $result_msg = "Error: something went wrong when trying to post!";
+                        } else {
+                            // Check directory permissions!!
+                            if(!touch($date_string)) {
+                                echo "Couldn't create file " . $date_string . " under " . realpath(dirname(__FILE__));
+                            } else {
+                                echo "OK<br/>\n";
                             }
                         }
                     } else {
