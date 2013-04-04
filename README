@@ -48,3 +48,14 @@ Technical details:
 - Default curl method is post x-www-form-urlencoded, multipart otherwise
 - Simple feedback to user
 
+# Automation (just for 1 step approach) usually via crontab:
+
+1.- Get basic authentication credentials (see .htpasswd file!) encoded in base64:
+
+$ echo -n <user:password> | base64
+<basic_auth_credentials_base64_encoded>
+
+2.- Prepare request:
+
+curl -vv http://<your_domain>/<path>/weekly.php -H "Authorization: Basic <basic_auth_credentials_base64_encoded>"
+
