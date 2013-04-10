@@ -28,18 +28,21 @@
                     $loop_cal_week = getCalendarWeek($norm_fecha);
                     if ($loop_cal_week == $current_cal_week) {
                         // 23/03/2013 16:30 Medio Maratón Azkoitia-Azpeitia 21097m Azpeitia (Gipuzkoa) Vredaman, Sukarr
+                        if(empty($row["Hora inicio"])) {
+                            $row["Hora inicio"] = "¿?";
+                        }
                         $entry = $row["Fecha"] . " " . $row["Hora inicio"];
-                        if(!empty($row["Observaciones"])) {
+                        if(!empty($row["Web"])) {
                             // Check that is a valid url! http://de3.php.net/manual/en/filter.filters.validate.php
-                            if (filter_var($row["Observaciones"], FILTER_VALIDATE_URL) === FALSE) {
-                                echo $row["Observaciones"] . " seems not a valid url!";
+                            if (filter_var($row["Web"], FILTER_VALIDATE_URL) === FALSE) {
+                                echo $row["Web"] . " seems not a valid url!";
                             } else {
-                                $entry .= " [url=" . $row["Observaciones"] . "]" . $row["Prueba"] . "[/url] ";
+                                $entry .= " [url=" . $row["Web"] . "]" . $row["Prueba"] . "[/url] ";
                             }
                         } else {
                             $entry .= " " . $row["Prueba"] . " ";
                         }
-                        $entry .= $row["Distancia"] . " " . $row["Localidad"] . " [b]" . $row["Foreros"] . "[/b]";
+                        $entry .= " " . $row["Distancia"] . " " . $row["Localidad"] . " [b]" . $row["Foreros"] . "[/b] " . $row["Observaciones"];
                         $post_msg .= $entry . "\n";
                     }
                 }
