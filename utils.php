@@ -104,4 +104,11 @@ function bbcode2html($bbcode_text) {
     return bbcode_parse($BBHandler, $bbcode_text);
 }
 
+function checkAbsoluteURL(&$url_string) {
+    $valid_url = strpos($url_string, "http");
+    if ($valid_url === false) {
+        $url_string = "http://" . $url_string;
+    }
+}
+
 ?>

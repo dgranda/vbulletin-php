@@ -33,9 +33,11 @@
                         }
                         $entry = $row["Fecha"] . " " . $row["Hora inicio"];
                         if(!empty($row["Web"])) {
+                            checkAbsoluteURL($row["Web"]);
                             // Check that is a valid url! http://de3.php.net/manual/en/filter.filters.validate.php
                             if (filter_var($row["Web"], FILTER_VALIDATE_URL) === FALSE) {
                                 echo $row["Web"] . " seems not a valid url!";
+                                $entry .= " " . $row["Prueba"] . " ";
                             } else {
                                 $entry .= " [url=" . $row["Web"] . "]" . $row["Prueba"] . "[/url] ";
                             }
