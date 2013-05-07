@@ -2,3 +2,4 @@ jar.txt
 [0-9]*
 .htpasswd
 update_remote.txt
+panel_cli.php
