@@ -22,6 +22,8 @@
             $post_title = "Carreritas semana #" . $current_cal_week;
             $post_msg = "";
             echo "Entries for current calendar week (" . $today->format("Y-m-d") . ", CW " . $current_cal_week ."):<br/>\n";
+            // Order data by date
+            quickSort($spreadsheet_data, "Fecha");
             foreach ($spreadsheet_data as $row) {
                 if(!empty($row["Fecha"]) && !empty($row["Foreros"])) { // We need valid date and people running!
                     $norm_fecha = str_replace("/", "-", $row["Fecha"]);
@@ -44,7 +46,10 @@
                         } else {
                             $entry .= " " . $row["Prueba"] . " ";
                         }
-                        $entry .= " " . $row["Distancia"] . " " . $row["Localidad"] . " [b]" . $row["Foreros"] . "[/b] " . $row["Observaciones"];
+                        $entry .= " " . $row["Distancia"] . " " . $row["Localidad"] . " [b]" . $row["Foreros"] . "[/b]";
+                        if($row["Observaciones"]) {
+                            $entry .=  " (" . $row["Observaciones"] . ")";
+                        }
                         $post_msg .= $entry . "\n";
                     }
                 }
