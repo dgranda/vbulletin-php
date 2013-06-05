@@ -29,8 +29,8 @@
                 $sort['Fecha'][$key] = $value['Fecha'];
                 $sort['Hora inicio'][$key] = $value['Hora inicio'];
             }
-            # sort by "Fecha" desc (first closer) and then "Hora inicio" asc (first earlier)
-            array_multisort($sort['Fecha'], SORT_DESC, $sort['Hora inicio'], SORT_ASC, $spreadsheet_data);
+            # sort by "Fecha" desc and then "Hora inicio" asc (first earlier)
+            array_multisort($sort['Fecha'], SORT_ASC, $sort['Hora inicio'], SORT_ASC, $spreadsheet_data);
 
             foreach ($spreadsheet_data as $row) {
                 if(!empty($row["Fecha"]) && !empty($row["Foreros"])) { // We need valid date and people running!
