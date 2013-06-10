@@ -15,10 +15,10 @@
         echo "Retrieving data from spreadsheet... ";
         # http://www.ravelrumba.com/blog/json-google-spreadsheets/
         $spreadsheet_data = getData(FEED);
+        $today = new DateTime("now", new DateTimeZone('Europe/Madrid'));
+        $current_cal_week = $today->format("W");
         if ($spreadsheet_data) {
             echo "OK<br/>\n";
-            $today = new DateTime("now", new DateTimeZone('Europe/Madrid'));
-            $current_cal_week = $today->format("W");
             $post_title = "Carreritas semana #" . $current_cal_week;
             $post_msg = "";
             echo "Entries for current calendar week (" . $today->format("Y-m-d") . ", CW " . $current_cal_week ."):<br/>\n";
@@ -27,6 +27,13 @@
             $sort = array();
             foreach($spreadsheet_data as $key => $value) {
                 $sort['Fecha'][$key] = $value['Fecha'];
+                if(empty($value['Hora inicio'])) {
+                    $value['Hora inicio'] = "00:00";
+                } else {
+                    // Taking hours and minutes. Force leading zeros
+                    $tmp = implode(":", $value['Hora inicio']);
+                    $value['Hora inicio'] = sprintf('%02d:%02d', $tmp[0], $tmp[1]);
+                }
                 $sort['Hora inicio'][$key] = $value['Hora inicio'];
             }
             # sort by "Fecha" desc and then "Hora inicio" asc (first earlier)
