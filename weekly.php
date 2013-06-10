@@ -29,11 +29,10 @@
                 $sort['Fecha'][$key] = $value['Fecha'];
                 if(empty($value['Hora inicio'])) {
                     $value['Hora inicio'] = "00:00";
-                } else {
-                    // Taking hours and minutes. Force leading zeros
-                    $tmp = implode(":", $value['Hora inicio']);
-                    $value['Hora inicio'] = sprintf('%02d:%02d', $tmp[0], $tmp[1]);
                 }
+                // Taking hours and minutes. Force leading zeros
+                $tmp = explode(":", $value['Hora inicio']);
+                $value['Hora inicio'] = sprintf('%02d:%02d', $tmp[0], $tmp[1]);
                 $sort['Hora inicio'][$key] = $value['Hora inicio'];
             }
             # sort by "Fecha" desc and then "Hora inicio" asc (first earlier)
