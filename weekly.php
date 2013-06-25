@@ -64,7 +64,8 @@
                         if($row["Observaciones"]) {
                             $entry .=  " (" . $row["Observaciones"] . ")";
                         }
-                        $post_msg .= $entry . "\n";
+                        // Removing extra whitespaces, tabs or new lines
+                        $post_msg .= preg_replace("/\s+/", " ", $entry) . "\n";
                     }
                 }
             }
